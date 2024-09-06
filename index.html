@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Quick Start - Leaflet</title>
+    <title>Mapa obiektów noclegowych w Polsce</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Bootstrap demo</title>
@@ -48,20 +48,36 @@
     </style>
   </head>
   <body>
-    <a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
-      Filtry
-    </a>
+    <div>
+      <a
+        class="btn btn-primary"
+        data-bs-toggle="offcanvas"
+        href="#offcanvasExample"
+        role="button"
+        aria-controls="offcanvasExample"
+      >
+        Filtry
+      </a>
+      <div id="warn"></div>
+    </div>
 
-    
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div
+      class="offcanvas offcanvas-start"
+      tabindex="-1"
+      id="offcanvasExample"
+      aria-labelledby="offcanvasExampleLabel"
+    >
       <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasExampleLabel">Filtry</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="offcanvas-body">
-        <div>
-          Udogodnienia
-        </div>
+        <div>Udogodnienia</div>
         <!-- <div class="dropdown mt-3">
           <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
             Dropdown button
@@ -75,14 +91,47 @@
         <form>
           <div id="form"></div>
           <div>
-            <button type="button" class="btn btn-primary" onclick="getPoints()">Wyślij</button>
+            <button type="button" class="btn btn-primary" onclick="getPoints()">
+              Wyślij
+            </button>
           </div>
         </form>
       </div>
     </div>
 
+    <div id="map" style="width: 100%; height: 90%"></div>
 
-    <div id="map" style="width: 80%; height: 80%"></div>
+    <div
+      class="modal fade"
+      id="alertModal"
+      tabindex="-1"
+      aria-labelledby="alertModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="alertModalLabel">Uwaga</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">Osiągnięto limit obiektów: 2000.<br>Zawęź filtry aby zobaczyć wszystkie pasujące obiekty</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Zamknij
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <script>
       const map = L.map("map").setView([54.4506593, 18.5607375125286], 7);
@@ -117,15 +166,6 @@
         //   })
         //     .addTo(map)
         //     .bindPopup("I am a circle.");
-
-        L.circle([54.4506593, 18.5607375125286], {
-          color: "red",
-          fillColor: "#f03",
-          fillOpacity: 0.5,
-          radius: 500,
-        })
-          .addTo(map)
-          .bindPopup("<b>HAFFNER</b><br>Sopot");
 
         //   const polygon = L.polygon([
         //     [51.509, -0.08],
@@ -169,7 +209,7 @@
             const checkboxesContainer = document.createElement("div");
             // checkboxesContainer.style.display = "flex";
             // checkboxesContainer.style.flexWrap = "wrap";
-            checkboxesContainer.class = "form-check-input"
+            checkboxesContainer.class = "form-check-input";
             // Iteruj po tablicy z unikatowymi wartościami
             uniqueContent.forEach((item) => {
               // Utwórz checkbox
@@ -241,7 +281,7 @@
         }
       });
 
-      function getPoint(point,nazwa,city,uid) {
+      function setPoint(point, nazwa, city, uid) {
         L.circle(point, {
           color: "red",
           fillColor: "#f03",
@@ -249,11 +289,19 @@
           radius: 500,
         })
           .addTo(map)
-          .bindPopup('<b>' + nazwa + '</b><br>' + city + '</b>' + '<br><a href=https://api.turystyka.gov.pl/registers/open/cwoh/' + uid + '>Szczegóły</a>');
+          .bindPopup(
+            "<b>" +
+              nazwa +
+              "</b><br>" +
+              city +
+              "</b>" +
+              "<br><a href=https://api.turystyka.gov.pl/registers/open/cwoh/" +
+              uid +
+              ">Szczegóły</a>"
+          );
       }
 
       function getPoints(e) {
-        // L.clearLayers();
         document
           .querySelectorAll(".leaflet-interactive")
           .forEach((el) => el.remove());
@@ -263,15 +311,26 @@
         points.then((data) => {
           // Tutaj możesz pracować na danych
           dane = data;
-          for (let index = 0; index < dane['content'].length; index++) {
-			point = dane['content'][index].spatialLocation.coordinates
-			name = dane['content'][index].name
-			city = dane['content'][index].city
-			uid = dane['content'][index].uid
-          getPoint(point,name,city,uid)
-        }
+          // warn = document.getElementById("warn")
+          // warn.outerHTML = "";
+
+          if (dane["content"].length > 1999) {
+
+            var modal = new bootstrap.Modal(
+              document.getElementById("alertModal")
+            );
+            modal.show();
+
           }
-        );
+
+          for (let index = 0; index < dane["content"].length; index++) {
+            point = dane["content"][index].spatialLocation.coordinates;
+            name = dane["content"][index].name;
+            city = dane["content"][index].city;
+            uid = dane["content"][index].uid;
+            setPoint(point, name, city, uid);
+          }
+        });
       }
     </script>
 
