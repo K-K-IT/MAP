@@ -48,75 +48,97 @@
     </style>
   </head>
   <body>
-    <form>
-      <div id="form"></div>
-      <div>
-        <button type="button" onclick="getPoints()">Wyślij</button>
+    <a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+      Filtry
+    </a>
+
+    
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Filtry</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
-    </form>
+      <div class="offcanvas-body">
+        <div>
+          Udogodnienia
+        </div>
+        <!-- <div class="dropdown mt-3">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            Dropdown button
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </div> -->
+        <form>
+          <div id="form"></div>
+          <div>
+            <button type="button" class="btn btn-primary" onclick="getPoints()">Wyślij</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
 
     <div id="map" style="width: 80%; height: 80%"></div>
-	
+
     <script>
-	const map = L.map("map").setView([54.4506593, 18.5607375125286], 13)
-      function createMap(){
-	  ;
+      const map = L.map("map").setView([54.4506593, 18.5607375125286], 7);
+      function createMap() {
+        const tiles = L.tileLayer(
+          "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+          {
+            maxZoom: 19,
+            attribution:
+              '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+          }
+        ).addTo(map);
 
-      const tiles = L.tileLayer(
-        "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-        {
-          maxZoom: 19,
-          attribution:
-            '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        }
-      ).addTo(map);
+        //   const marker = L.marker([51.5, -0.09])
+        //     .addTo(map)
+        //     .bindPopup("<b>Hello world!</b><br />I am a popup.")
+        //     .openPopup();
 
-    //   const marker = L.marker([51.5, -0.09])
-    //     .addTo(map)
-    //     .bindPopup("<b>Hello world!</b><br />I am a popup.")
-    //     .openPopup();
+        //   const circle = L.circle([51.508, -0.11], {
+        //     color: "red",
+        //     fillColor: "#f03",
+        //     fillOpacity: 0.5,
+        //     radius: 500,
+        //   })
+        //     .addTo(map)
+        //     .bindPopup("I am a circle.");
+        //   L.circle([51.508, -0.11], {
+        //     color: "red",
+        //     fillColor: "#f03",
+        //     fillOpacity: 0.5,
+        //     radius: 500,
+        //   })
+        //     .addTo(map)
+        //     .bindPopup("I am a circle.");
 
-    //   const circle = L.circle([51.508, -0.11], {
-    //     color: "red",
-    //     fillColor: "#f03",
-    //     fillOpacity: 0.5,
-    //     radius: 500,
-    //   })
-    //     .addTo(map)
-    //     .bindPopup("I am a circle.");
-    //   L.circle([51.508, -0.11], {
-    //     color: "red",
-    //     fillColor: "#f03",
-    //     fillOpacity: 0.5,
-    //     radius: 500,
-    //   })
-    //     .addTo(map)
-    //     .bindPopup("I am a circle.");
+        L.circle([54.4506593, 18.5607375125286], {
+          color: "red",
+          fillColor: "#f03",
+          fillOpacity: 0.5,
+          radius: 500,
+        })
+          .addTo(map)
+          .bindPopup("<b>HAFFNER</b><br>Sopot");
 
-      L.circle([54.4506593, 18.5607375125286], {
-        color: "red",
-        fillColor: "#f03",
-        fillOpacity: 0.5,
-        radius: 500,
-      })
-        .addTo(map)
-        .bindPopup("<b>HAFFNER</b><br>Sopot");
+        //   const polygon = L.polygon([
+        //     [51.509, -0.08],
+        //     [51.503, -0.06],
+        //     [51.51, -0.047],
+        //   ])
+        //     .addTo(map)
+        //     .bindPopup("I am a polygon.");
+      }
 
-    //   const polygon = L.polygon([
-    //     [51.509, -0.08],
-    //     [51.503, -0.06],
-    //     [51.51, -0.047],
-    //   ])
-    //     .addTo(map)
-    //     .bindPopup("I am a polygon.");
-
-
-
-	}
-
-    //   map.on("click", onMapClick);
+      //   map.on("click", onMapClick);
       document.onload(
-		createMap(),
+        createMap(),
         createCheckboxesFromJSON(
           "https://api.turystyka.gov.pl/registers/open/cwoh/filters/questionnaires"
         )
@@ -145,9 +167,9 @@
 
             // Utwórz kontener dla wszystkich checkboxów
             const checkboxesContainer = document.createElement("div");
-            checkboxesContainer.style.display = "flex";
-            checkboxesContainer.style.flexWrap = "wrap";
-
+            // checkboxesContainer.style.display = "flex";
+            // checkboxesContainer.style.flexWrap = "wrap";
+            checkboxesContainer.class = "form-check-input"
             // Iteruj po tablicy z unikatowymi wartościami
             uniqueContent.forEach((item) => {
               // Utwórz checkbox
@@ -219,7 +241,7 @@
         }
       });
 
-      function getPoint(point,nazwa) {
+      function getPoint(point,nazwa,city,uid) {
         L.circle(point, {
           color: "red",
           fillColor: "#f03",
@@ -227,22 +249,29 @@
           radius: 500,
         })
           .addTo(map)
-          .bindPopup('<b>' + nazwa + '</b><br>Nazwa miasta');
+          .bindPopup('<b>' + nazwa + '</b><br>' + city + '</b>' + '<br><a href=https://api.turystyka.gov.pl/registers/open/cwoh/' + uid + '>Szczegóły</a>');
       }
 
       function getPoints(e) {
-		// L.clearLayers();
-		document.querySelectorAll(".leaflet-interactive").forEach(el=>el.remove())
+        // L.clearLayers();
+        document
+          .querySelectorAll(".leaflet-interactive")
+          .forEach((el) => el.remove());
 
         var points = sendCheckedValues();
 
-		points.then((data) => {
-   	 	// Tutaj możesz pracować na danych
-    	dane = data
-        for (let index = 0; index < dane['content'].length; index++) {
-          getPoint(dane['content'][index].spatialLocation.coordinates,dane['content'][index].name)
+        points.then((data) => {
+          // Tutaj możesz pracować na danych
+          dane = data;
+          for (let index = 0; index < dane['content'].length; index++) {
+			point = dane['content'][index].spatialLocation.coordinates
+			name = dane['content'][index].name
+			city = dane['content'][index].city
+			uid = dane['content'][index].uid
+          getPoint(point,name,city,uid)
         }
-});
+          }
+        );
       }
     </script>
 
