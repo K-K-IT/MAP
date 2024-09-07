@@ -41,7 +41,7 @@
         max-height: 100%;
       }
       .leaflet-popup-content {
-    width: auto !important;
+        width: auto !important;
       }
     </style>
   </head>
@@ -76,10 +76,20 @@
       </div>
       <form>
         <label>Wybierz rodzaj obiektu</label>
-        <select id="kind-filter" class="form-select form-select-lg mb-3" aria-label="Large select example">
-          
+        <select
+          id="kind-filter"
+          class="form-select form-select-lg mb-3"
+          aria-label="Large select example"
+        >
           <option selected>-</option>
-
+        </select>
+        <label>Wybierz kategorię obiektu</label>
+        <select
+          id="category-filter"
+          class="form-select form-select-lg mb-3"
+          aria-label="Large select example"
+        >
+          <option selected>-</option>
         </select>
         <div id="form">
           <div class="offcanvas-body">
@@ -147,13 +157,12 @@
     <script src="js/site.js"></script>
 
     <script>
-      window.onload = async function() {
+      window.onload = async function () {
         await createMap();
         const kind = await getKinds();
-        await getCategories();
-        createFilters(kind);
+        const categories = await getCategories();
+        createFilters(kind, categories);
       };
     </script>
-    
   </body>
 </html>

@@ -39,6 +39,10 @@ async function sendCheckedValues(e) {
   if (!(k == "-")){
     apiUrl = apiUrl + `&kind=${k}`
   }
+  c = document.getElementById("category-filter").value
+  if (!(c == "-")){
+    apiUrl = apiUrl + `&category=${c}`
+  }
   console.log(apiUrl);
 
   try {
@@ -104,6 +108,7 @@ async function getCategories() {
   try {
     const out = await getJSON("https://api.turystyka.gov.pl/administration/open/dictionaries/KCWOH/values");
     categories = mapCategory(out); // Uzyskaj słownik z mapKind
+    return categories
   } catch (error) {
     console.error("Błąd w getKinds:", error);
   }

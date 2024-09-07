@@ -110,19 +110,28 @@ function createFilterKind(kind) {
   }
 }
 
-// function createFilterKind(){
-//   el = document.getElementById("kind-filter")
-//   kind.forEach((item) => {
-//     child = `<option value="${item.key}">${item.value}</option>
-// `
-//   el.appendChild(el)
-//   }
-// )
-// }
 
-function createFilters(kind) {
+
+
+function createFilterCategory(categories) {
+  console.log(categories);
+  const el = document.getElementById("category-filter");
+
+  for (const key in categories) {
+    if (categories.hasOwnProperty(key)) {
+      const option = document.createElement("option");
+      option.value = key;
+      option.textContent = categories[key];
+      el.appendChild(option);
+    }
+  }
+}
+
+
+function createFilters(kind,categories) {
   createQ();
   createFilterKind(kind);
+  createFilterCategory(categories);
 }
 
 
