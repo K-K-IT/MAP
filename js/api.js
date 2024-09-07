@@ -1,3 +1,5 @@
+let kind;
+
 async function getJSON(url) {
   return fetch(url)
     .then((response) => {
@@ -64,5 +66,24 @@ function getData(url) {
     .catch((err) => console.log(err));
 }
 
-// Użycie funkcji
+
+function mapKind(out) {
+  const dictionary = out.content.reduce((acc, item) => {
+    acc[item.code] = item.value;
+    return acc;
+  }, {});
+  return dictionary; // Zwróć utworzony słownik
+}
+
+async function getKinds() {
+  try {
+    const out = await getJSON("https://api.turystyka.gov.pl/administration/open/dictionaries/RCWOH/values");
+    kind = mapKind(out); // Uzyskaj słownik z mapKind
+    console.log(kinds); // Możesz zalogować lub użyć kinds według potrzeb
+  } catch (error) {
+    console.error("Błąd w getKinds:", error);
+  }
+}
+
+
 
