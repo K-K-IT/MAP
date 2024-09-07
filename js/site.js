@@ -55,12 +55,16 @@ function createDetails(data) {
   // Sprawdzenie, czy element ma atrybut 'alt'
   // Sprawdzenie, czy znaleziono element
   if (popup) {
+    var www = dane['www']
+    if (!(www.includes("www.")) & www.length > 0 ){
+      www = "https://www." + www
+    }
 
     popup.innerHTML = `<b>${dane['name']}</b><br>
     Adres: ${dane['city']} ${dane['postalCode']} <br>
     ${dane['street']} ${dane['streetNumber']} <br>
     Telefon: ${dane['phone']}<br>
-    WWW: <a href=https://www.${dane['www']} target="_blank">${dane['www']}</a><br>
+    WWW: <a href=${www} target="_blank">${www}</a><br>
     e-mail: ${dane['email']}<br>`
 
 
