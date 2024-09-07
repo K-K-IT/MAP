@@ -1,0 +1,68 @@
+async function getJSON(url) {
+  return fetch(url)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .catch((error) => {
+      console.error("Błąd podczas ładowania pliku JSON:", error);
+      throw error; // Rzuć błąd dalej, aby można go było obsłużyć w wywołującej funkcji
+    });
+}
+
+// Funkcja do tworzenia checkboxów na podstawie danych JSON
+
+// Przykład użycia obu funkcji
+
+async function sendCheckedValues(e) {
+  // Pobierz wszystkie zaznaczone checkboxy udogodnienia
+  const checkedCheckboxesUdogodnienia = document
+    .getElementById("udogodnienia")
+    .querySelectorAll('#form input[type="checkbox"]:checked');
+
+  // Pobierz wartości key z zaznaczonych checkboxów
+  const checkedKeysUdogodnienia = [];
+  for (let index = 0; index < checkedCheckboxesUdogodnienia.length; index++) {
+    checkedKeysUdogodnienia.push(checkedCheckboxesUdogodnienia[index].value);
+  }
+
+  // Utwórz adres URL z pobranymi kluczami
+  const apiUrl = `https://api.turystyka.gov.pl/registers/open/cwoh?questionnaires=${checkedKeysUdogodnienia.join(
+    ","
+  )}&size=99999`;
+  console.log(apiUrl);
+
+  try {
+    // Pobierz dane z API asynchronicznie
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+
+    // Tutaj możesz przetwarzać dane pobrane z API
+    console.log(data);
+    return data; // Zwróć dane
+  } catch (error) {
+    console.error("Błąd podczas pobierania danych:", error);
+    return null; // Możesz zwrócić null lub inny wskaźnik błędu
+  }
+}
+
+sendCheckedValues(event).then((data) => {
+  if (data) {
+    // Tutaj masz dostęp do danych
+    console.log("Dane:", data);
+    // Możesz dalej pracować na danych
+  }
+});
+
+function getData(url) {
+  // const url1 = 'https://api.turystyka.gov.pl/registers/open/cwoh/filters/questionnaires';
+  fetch(url)
+    .then((res) => res.json())
+    .then((out) => (data1 = out))
+    .catch((err) => console.log(err));
+}
+
+// Użycie funkcji
+
