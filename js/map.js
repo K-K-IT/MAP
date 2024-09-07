@@ -41,10 +41,8 @@ function getPoints(e) {
   var points = sendCheckedValues();
 
   points.then((data) => {
-    // Tutaj możesz pracować na danych
     dane = data;
-    // warn = document.getElementById("warn")
-    // warn.outerHTML = "";
+
 
     if (dane["content"].length > 1999) {
       var modal = new bootstrap.Modal(document.getElementById("alertModal"));
@@ -78,11 +76,3 @@ function onMarkerClick(e) {
   
   }
 
-
-// // Dodanie nasłuchiwania na kliknięcia na markery
-// map.on("click", function (e) {
-//   // Sprawdzenie, czy kliknięto na marker
-//   if (e.originalEvent.target.classList.contains("leaflet-marker-icon")) {
-//     onMarkerClick(e.originalEvent);
-//   }
-// });

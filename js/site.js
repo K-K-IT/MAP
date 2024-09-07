@@ -114,11 +114,15 @@ function createFilterKind(kind) {
 
 
 function createFilterCategory(categories) {
-  console.log(categories);
-  const el = document.getElementById("category-filter");
 
+  const kind_tmp = document.getElementById("kind-filter").value.slice(-3)
+
+  const el = document.getElementById("category-filter");
+  el.innerHTML = "<option selected>-</option>"
+  
   for (const key in categories) {
-    if (categories.hasOwnProperty(key)) {
+    if (categories.hasOwnProperty(key) & key.slice(-3) == kind_tmp) {
+
       const option = document.createElement("option");
       option.value = key;
       option.textContent = categories[key];
@@ -128,10 +132,11 @@ function createFilterCategory(categories) {
 }
 
 
-function createFilters(kind,categories) {
+createFilterCategory(categories);
+function createFilters(kind) {
   createQ();
   createFilterKind(kind);
-  createFilterCategory(categories);
+  
 }
 
 

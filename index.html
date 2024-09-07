@@ -80,6 +80,7 @@
           id="kind-filter"
           class="form-select form-select-lg mb-3"
           aria-label="Large select example"
+          onchange="createFilterCategory(categories)"
         >
           <option selected>-</option>
         </select>
@@ -161,7 +162,7 @@
         await createMap();
         const kind = await getKinds();
         const categories = await getCategories();
-        createFilters(kind, categories);
+        createFilters(kind);
       };
     </script>
   </body>
