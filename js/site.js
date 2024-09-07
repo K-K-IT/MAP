@@ -56,11 +56,17 @@ function createDetails(data) {
   // Sprawdzenie, czy znaleziono element
   if (popup) {
     var www = dane['www']
+    try{
     if (!(www.includes("www.")) & www.length > 0 ){
       www = "https://www." + www
     }
+  }
+  catch{
 
+  }
     popup.innerHTML = `<b>${dane['name']}</b><br>
+    Rodzaj obiektu: ${kind[dane['kind']]}<br>
+    Klasyfikacja obiektu: ${categories[dane['category']]} <br>
     Adres: ${dane['city']} ${dane['postalCode']} <br>
     ${dane['street']} ${dane['streetNumber']} <br>
     Telefon: ${dane['phone']}<br>
@@ -73,6 +79,51 @@ function createDetails(data) {
   }
 }
 
-function createfilters() {
-  createQ();
+
+
+// function createFilterKind() {
+//   console.log(kind)
+//   const el = document.getElementById("kind-filter");
+//   // Wyczyść istniejące opcje
+//   for (const key in kind) {
+//     if (kind.hasOwnProperty(key)) {
+//       const option = document.createElement("option");
+//       option.value = key;
+//       option.textContent = kind[key];
+//       el.appendChild(option);
+//     }
+//   }
+// }
+
+
+function createFilterKind(kind) {
+  console.log(kind);
+  const el = document.getElementById("kind-filter");
+
+  for (const key in kind) {
+    if (kind.hasOwnProperty(key)) {
+      const option = document.createElement("option");
+      option.value = key;
+      option.textContent = kind[key];
+      el.appendChild(option);
+    }
+  }
 }
+
+// function createFilterKind(){
+//   el = document.getElementById("kind-filter")
+//   kind.forEach((item) => {
+//     child = `<option value="${item.key}">${item.value}</option>
+// `
+//   el.appendChild(el)
+//   }
+// )
+// }
+
+function createFilters(kind) {
+  createQ();
+  createFilterKind(kind);
+}
+
+
+

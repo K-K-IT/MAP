@@ -1,4 +1,5 @@
 let kind;
+let category;
 
 async function getJSON(url) {
   return fetch(url)
@@ -31,9 +32,13 @@ async function sendCheckedValues(e) {
   }
 
   // Utwórz adres URL z pobranymi kluczami
-  const apiUrl = `https://api.turystyka.gov.pl/registers/open/cwoh?questionnaires=${checkedKeysUdogodnienia.join(
+  var apiUrl = `https://api.turystyka.gov.pl/registers/open/cwoh?questionnaires=${checkedKeysUdogodnienia.join(
     ","
   )}&size=99999`;
+  k = document.getElementById("kind-filter").value
+  if (!(k == "-")){
+    apiUrl = apiUrl + `&kind=${k}`
+  }
   console.log(apiUrl);
 
   try {
@@ -79,11 +84,28 @@ async function getKinds() {
   try {
     const out = await getJSON("https://api.turystyka.gov.pl/administration/open/dictionaries/RCWOH/values");
     kind = mapKind(out); // Uzyskaj słownik z mapKind
-    console.log(kinds); // Możesz zalogować lub użyć kinds według potrzeb
+    return kind
   } catch (error) {
     console.error("Błąd w getKinds:", error);
   }
 }
 
 
+
+function mapCategory(out) {
+  const dictionary = out.content.reduce((acc, item) => {
+    acc[item.code] = item.value;
+    return acc;
+  }, {});
+  return dictionary; // Zwróć utworzony słownik
+}
+
+async function getCategories() {
+  try {
+    const out = await getJSON("https://api.turystyka.gov.pl/administration/open/dictionaries/KCWOH/values");
+    categories = mapCategory(out); // Uzyskaj słownik z mapKind
+  } catch (error) {
+    console.error("Błąd w getKinds:", error);
+  }
+}
 

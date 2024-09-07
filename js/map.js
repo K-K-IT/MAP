@@ -53,8 +53,6 @@ function getPoints(e) {
 
     for (let index = 0; index < dane["content"].length; index++) {
       point = dane["content"][index].spatialLocation.coordinates;
-      nazwa = dane["content"][index].name;
-      city = dane["content"][index].city;
       uid = dane["content"][index].uid;
       setPoint(point, uid);
     }

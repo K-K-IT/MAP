@@ -75,6 +75,12 @@
         ></button>
       </div>
       <form>
+        <label>Wybierz rodzaj obiektu</label>
+        <select id="kind-filter" class="form-select form-select-lg mb-3" aria-label="Large select example">
+          
+          <option selected>-</option>
+
+        </select>
         <div id="form">
           <div class="offcanvas-body">
             <a
@@ -141,12 +147,13 @@
     <script src="js/site.js"></script>
 
     <script>
-     
-      document.onload(
-        createMap(),
-        createfilters(),
-        getKinds()
-      );
+      window.onload = async function() {
+        await createMap();
+        const kind = await getKinds();
+        await getCategories();
+        createFilters(kind);
+      };
     </script>
+    
   </body>
 </html>
