@@ -7,7 +7,32 @@ function createMap() {
     attribution:
       '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
   }).addTo(map);
+// Utwórz grupę warstw
+
+
+
+  // Dodaj przycisk "Filtry" do mapy
+  const filtersButton = L.control({ position: "topleft" });
+  filtersButton.onAdd = function(map) {
+    const div = L.DomUtil.create("div", "filters-button");
+    div.innerHTML = `<button
+        class="btn btn-secondary"
+        data-bs-toggle="offcanvas"
+        href="#offcanvasExample"
+        role="button"
+        aria-controls="offcanvasExample"
+      >
+        Filtry
+      </button>`;
+
+    return div;
+  };
+
+  filtersButton.addTo(map);
 }
+
+
+
 
 function setPoint(point, uid) {
   const popupContent = document.createElement("div");
