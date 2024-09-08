@@ -23,7 +23,7 @@ async function sendCheckedValues(e) {
   // Pobierz wszystkie zaznaczone checkboxy udogodnienia
   const checkedCheckboxesUdogodnienia = document
     .getElementById("udogodnienia")
-    .querySelectorAll('#form input[type="checkbox"]:checked');
+    .querySelectorAll('#udogodnienia input[type="checkbox"]:checked');
 
   // Pobierz wartości key z zaznaczonych checkboxów
   const checkedKeysUdogodnienia = [];

@@ -43,21 +43,39 @@
       .leaflet-popup-content {
         width: auto !important;
       }
+      .offcanvas {
+            overflow-y: auto; /* Dodaj przewijanie w pionie */
+      }
     </style>
   </head>
   <body>
     <div>
-      <a
-        class="btn btn-primary"
+      <button
+        class="badge text-bg-light"
         data-bs-toggle="offcanvas"
         href="#offcanvasExample"
         role="button"
         aria-controls="offcanvasExample"
       >
         Filtry
-      </a>
+      </button>
+      
       <div id="warn"></div>
     </div>
+
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasRightLabel">Offcanvas right</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        ...
+      </div>
+    </div>
+
+
+
 
     <div
       class="offcanvas offcanvas-start"
@@ -94,23 +112,28 @@
         </select>
         <div id="form">
           <div class="offcanvas-body">
-            <a
-              class="btn btn-primary"
-              data-bs-toggle="collapse"
-              href="#udogodnienia"
-              role="button"
-              aria-expanded="true"
-              aria-controls="udogodnienia"
-            >
-              Udogodnienia
-            </a>
+            <div class="accordion" id="accordionExample">
+              <div class="accordion-item"></div>
+              <button
+                id="udogodnienia-button"
+                type="button"
+                class="accordion-button collapsed"
+                data-bs-toggle="collapse"
+                data-bs-target="#udogodnienia"
+                aria-controls="udogodnienia"
+                aria-expanded="false"
+              >
+                Udogodnienia
+              </button>
+            </div>
           </div>
-          <div class="collapse" id="udogodnienia"></div>
-          <div>
-            <button type="button" class="btn btn-primary" onclick="getPoints()">
-              Wyślij
-            </button>
-          </div>
+        </div>
+
+        <div class="collapse" id="udogodnienia"></div>
+        <div>
+          <button type="button" class="btn btn-primary" onclick="getPoints()">
+            Wyślij
+          </button>
         </div>
       </form>
     </div>
@@ -165,5 +188,7 @@
         createFilters(kind);
       };
     </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
   </body>
 </html>
