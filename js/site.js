@@ -205,7 +205,7 @@ function fillDetails(data) {
 
                   target="_blank"
                   class="btn btn-success btn-sm"
-                  >Mapa.cz</a
+                  >Mapy.cz</a
                 >
               </center>
             </td>
