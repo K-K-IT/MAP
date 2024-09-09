@@ -1,5 +1,5 @@
-var uniqueContent
-var udogodnienia_counter
+var uniqueContent;
+var udogodnienia_counter;
 function createCheckboxes(data) {
   // Znajdź element z id "form"
   const formContainer = document.getElementById("udogodnienia");
@@ -87,8 +87,11 @@ function createDetails(data) {
     >
       Szczegóły
     </button>
+    <button class="save-button">Zapisz</button>
     `;
     detailsPanel.innerHTML = fillDetails(data);
+    const saveButton = popup.querySelector(".save-button");
+    saveButton.addEventListener("click", () => saveMarker(dane["uid"]));
   } else {
     console.log("Nie znaleziono elementu div z data-uid:", uid);
   }
@@ -145,6 +148,7 @@ function createFilters(kind) {
 }
 
 function fillDetails(data) {
+  udogodnienia_counter = 0;
   html = `
 <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasRightLabel">Informacje o obiekcie</h5>
@@ -194,19 +198,31 @@ function fillDetails(data) {
             </td>          </tr>
           <tr>
             <td>Adres</td>
-            <td>  ${data["content"]["postalCode"]} ${data["content"]["city"]}<br>  ${data["content"]["street"]}  ${data["content"]["streetNumber"]}<br>  ${data["content"]["voivodeship"]}</td>
+            <td>  ${data["content"]["postalCode"]} ${
+    data["content"]["city"]
+  }<br>  ${data["content"]["street"]}  ${
+    data["content"]["streetNumber"]
+  }<br>  ${data["content"]["voivodeship"]}</td>
           </tr>
           <tr>
             <td colspan="2">
               <center>
                 <a
-                  href="https://www.google.com/maps?q=${data["content"]["spatialLocation"]["coordinates"][0]},${data["content"]["spatialLocation"]["coordinates"][1]}"
+                  href="https://www.google.com/maps?q=${
+                    data["content"]["spatialLocation"]["coordinates"][0]
+                  },${data["content"]["spatialLocation"]["coordinates"][1]}"
                   target="_blank"
                   class="btn btn-primary btn-sm"
                   >Google Maps</a
                 >
                 <a
-                  href="https://pl.mapy.cz/turisticka?q=${data["content"]["spatialLocation"]["coordinates"][0]},${data["content"]["spatialLocation"]["coordinates"][1]}&source=coor&ids=1&x=${data["content"]["spatialLocation"]["coordinates"][0]}&y=${data["content"]["spatialLocation"]["coordinates"][1]}&z=19"
+                  href="https://pl.mapy.cz/turisticka?q=${
+                    data["content"]["spatialLocation"]["coordinates"][0]
+                  },${
+    data["content"]["spatialLocation"]["coordinates"][1]
+  }&source=coor&ids=1&x=${
+    data["content"]["spatialLocation"]["coordinates"][0]
+  }&y=${data["content"]["spatialLocation"]["coordinates"][1]}&z=19"
                   
 
                   target="_blank"
@@ -272,29 +288,32 @@ function fillDetails(data) {
                     <th>Udogodnienie</th>
                     <th>Wartość</th>
                   </tr>
-                  ${udogodnienia_counter = 0}
-                  ${uniqueContent.map((item) => {
-                    
-                    const questionnaires = data['content']['questionnaires']
-                    const matchingQuestionnaire = questionnaires.find((q) => q.key === item.key);
-                    if (matchingQuestionnaire) {
-                      udogodnienia_counter = udogodnienia_counter + 1
-                      return `
+                
+                  ${uniqueContent
+                    .map((item) => {
+                      const questionnaires = data["content"]["questionnaires"];
+                      const matchingQuestionnaire = questionnaires.find(
+                        (q) => q.key === item.key
+                      );
+                      if (matchingQuestionnaire) {
+                        udogodnienia_counter = udogodnienia_counter + 1;
+                        return `
                         <tr>
                           <td>${matchingQuestionnaire.name}</td>
                           <td>${matchingQuestionnaire.value}</td>
                         </tr>
                       `;
-                      
-                    }
-                    return '';
-                  }).join('')}
+                      }
+                      return "";
+                    })
+                    .join("")}
                   </div>
                   `;
 
   return html;
 }
 
-function updateCounter(){
-  document.getElementById("udogodnienia_count").textContent = udogodnienia_counter
+function updateCounter() {
+  document.getElementById("udogodnienia_count").textContent =
+    udogodnienia_counter;
 }

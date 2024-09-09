@@ -1,5 +1,11 @@
+var savedMarkers = [];
+
 let map;
+
+
+
 function createMap() {
+  savedMarkers = getCookie('savedMarkers')  
   map = L.map("map").setView([54.4506593, 18.5607375125286], 7);
 
   const tiles = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -49,6 +55,8 @@ function setPoint(point, uid) {
   // Dodawanie własnego atrybutu
   popupContent.setAttribute("data-uid", uid);
   popupContent.setAttribute("style", "width: auto;");
+
+
   var marker = L.marker(point, {
     color: "red",
     fillColor: "#f03",
@@ -59,6 +67,7 @@ function setPoint(point, uid) {
   marker.addTo(map).bindPopup(popupContent);
 
   marker.on("click", onMarkerClick);
+
 }
 
 function showAboutModal() {
@@ -105,4 +114,27 @@ function onMarkerClick(e) {
   getJSON("https://api.turystyka.gov.pl/registers/open/cwoh/" + uid).then(
     (data) => createDetails(data)
   );
+}
+
+function saveMarker(uid) {
+  const savedMarkers = JSON.parse(getCookie("savedMarkers")) || [];
+  savedMarkers.push({ uid });
+  setCookie("savedMarkers", JSON.stringify(savedMarkers), 365);
+}
+
+function setCookie(name, value, days) {
+  const expires = new Date(Date.now() + days * 86400000).toUTCString();
+  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
+}
+
+
+function getCookie(name) {
+  const cookies = document.cookie.split(';');
+  for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i].trim();
+    if (cookie.startsWith(`${name}=`)) {
+      return decodeURIComponent(cookie.substring(name.length + 1));
+    }
+  }
+  return null;
 }
