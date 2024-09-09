@@ -49,13 +49,19 @@ function createMap() {
 }
 
 function setPoint(point, uid) {
-  const isSaved = myArray.map(item => item.uid).includes(val);
   const popupContent = document.createElement("div");
-  popupContent.innerHTML = `      `;
-  // Dodawanie własnego atrybutu
+  popupContent.innerHTML = `
+    <button class="save-button">Zapisz</button>
+    <button class="unmark-button">Odznacz</button>
+  `;
   popupContent.setAttribute("data-uid", uid);
   popupContent.setAttribute("style", "width: auto;");
- 
+
+  const saveButton = popupContent.querySelector(".save-button");
+  saveButton.addEventListener("click", () => saveMarker(point, uid));
+
+  const unmarkButton = popupContent.querySelector(".unmark-button");
+  unmarkButton.addEventListener("click", () => unmarkMarker(uid));
 
   var marker = L.marker(point, {
     color: "red",
@@ -64,14 +70,14 @@ function setPoint(point, uid) {
     radius: 500,
     alt: uid,
   });
-  if (isSaved){
-    marker.color = "green"
-  }
-  
   marker.addTo(map).bindPopup(popupContent);
 
   marker.on("click", onMarkerClick);
 
+  // Sprawdzenie, czy marker jest zapisany w ciasteczkach
+  if (isMarkerSaved(uid)) {
+    marker.setStyle({ color: "green" }); // Zmiana koloru markera na zielony, jeśli jest zapisany
+  }
 }
 
 function showAboutModal() {
@@ -80,8 +86,6 @@ function showAboutModal() {
 }
 
 function getPoints(e) {
-  savedMarkers = getCookie('savedMarkers')  
-
   document
     .querySelectorAll(".leaflet-interactive")
     .forEach((el) => el.remove());
@@ -112,25 +116,34 @@ function showDetails(uid) {
 }
 
 // Funkcja do obsługi kliknięcia na marker
-function onMarkerClick(e) {
-  // Pobranie elementu, na który kliknięto
-  const uid = e.target.options["alt"];
 
-  // Podmiana innerHTML na nową wartość
+function onMarkerClick(e) {
+  const uid = e.target.options["alt"];
   getJSON("https://api.turystyka.gov.pl/registers/open/cwoh/" + uid).then(
     (data) => createDetails(data)
   );
 }
 
-function saveMarker(uid) {
+function saveMarker(point, uid) {
   const savedMarkers = JSON.parse(getCookie("savedMarkers")) || [];
-  savedMarkers.push({ uid });
+  savedMarkers.push({ point, uid });
   setCookie("savedMarkers", JSON.stringify(savedMarkers), 365);
+}
+
+function unmarkMarker(uid) {
+  const savedMarkers = JSON.parse(getCookie("savedMarkers")) || [];
+  const updatedMarkers = savedMarkers.filter(marker => marker.uid !== uid);
+  setCookie("savedMarkers", JSON.stringify(updatedMarkers), 365);
+}
+
+function isMarkerSaved(uid) {
+  const savedMarkers = JSON.parse(getCookie("savedMarkers")) || [];
+  return savedMarkers.some(marker => marker.uid === uid);
 }
 
 function setCookie(name, value, days) {
   const expires = new Date(Date.now() + days * 86400000).toUTCString();
-  document.cookie = `${name}=${value}; expires=${expires}; path=/; SameSite=None; Secure`;
+  document.cookie = `${name}=${value}; expires=${expires}; path=/; SameSite=Yes; Secure`;
 }
 
 
