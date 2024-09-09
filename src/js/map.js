@@ -7,13 +7,11 @@ function createMap() {
     attribution:
       '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
   }).addTo(map);
-// Utwórz grupę warstw
-
-
+  // Utwórz grupę warstw
 
   // Dodaj przycisk "Filtry" do mapy
-  const filtersButton = L.control({ position: "topleft" });
-  filtersButton.onAdd = function(map) {
+  var filtersButton = L.control({ position: "topleft" });
+  filtersButton.onAdd = function (map) {
     const div = L.DomUtil.create("div", "filters-button");
     div.innerHTML = `<button
         class="btn btn-secondary"
@@ -27,12 +25,23 @@ function createMap() {
 
     return div;
   };
-
   filtersButton.addTo(map);
+
+  // Dodaj przycisk "Filtry" do mapy
+  var aboutButton = L.control({ position: "topright" });
+  aboutButton.onAdd = function (map) {
+    const div = L.DomUtil.create("div", "about-button");
+    div.innerHTML = `<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#aboutModal" onclick="showAboutModal()">
+
+
+    O mapie
+  </button>`;
+
+    return div;
+  };
+
+  aboutButton.addTo(map);
 }
-
-
-
 
 function setPoint(point, uid) {
   const popupContent = document.createElement("div");
@@ -47,14 +56,15 @@ function setPoint(point, uid) {
     radius: 500,
     alt: uid,
   });
-  marker.addTo(map)
-    .bindPopup(popupContent);
-    
-    marker.on('click', onMarkerClick);
+  marker.addTo(map).bindPopup(popupContent);
 
+  marker.on("click", onMarkerClick);
 }
 
-
+function showAboutModal() {
+  var modal = new bootstrap.Modal(document.getElementById("aboutModal"));
+  modal.show();
+}
 
 function getPoints(e) {
   document
@@ -68,7 +78,6 @@ function getPoints(e) {
   points.then((data) => {
     dane = data;
 
-
     if (dane["content"].length > 1999) {
       var modal = new bootstrap.Modal(document.getElementById("alertModal"));
       modal.show();
@@ -79,8 +88,6 @@ function getPoints(e) {
       uid = dane["content"][index].uid;
       setPoint(point, uid);
     }
-
-
   });
 }
 
@@ -92,12 +99,10 @@ function showDetails(uid) {
 // Funkcja do obsługi kliknięcia na marker
 function onMarkerClick(e) {
   // Pobranie elementu, na który kliknięto
-  const uid = e.target.options['alt']
-    
-      // Podmiana innerHTML na nową wartość
-      getJSON("https://api.turystyka.gov.pl/registers/open/cwoh/" + uid)
-    .then((data) => createDetails(data))
-        
-  
-  }
+  const uid = e.target.options["alt"];
 
+  // Podmiana innerHTML na nową wartość
+  getJSON("https://api.turystyka.gov.pl/registers/open/cwoh/" + uid).then(
+    (data) => createDetails(data)
+  );
+}

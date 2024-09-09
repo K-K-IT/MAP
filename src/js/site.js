@@ -146,9 +146,15 @@ function createFilters(kind) {
 
 function fillDetails(data) {
   html = `
-  
-    <div class="container mt-5">
-      <h2>Informacje o obiekcie</h2>
+<div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasRightLabel">Informacje o obiekcie</h5>
+        <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"
+      ></button>      </div>
+      <div class="offcanvas-body">
       <table class="table table-bordered">
         <tbody>
                
@@ -283,7 +289,7 @@ function fillDetails(data) {
                     }
                     return '';
                   }).join('')}
-                  
+                  </div>
                   `;
 
   return html;
