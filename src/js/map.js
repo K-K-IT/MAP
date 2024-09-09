@@ -124,9 +124,9 @@ function onMarkerClick(e) {
   );
 }
 
-function saveMarker(point, uid) {
+function saveMarker(uid) {
   const savedMarkers = JSON.parse(getCookie("savedMarkers")) || [];
-  savedMarkers.push({ point, uid });
+  savedMarkers.push({ uid });
   setCookie("savedMarkers", JSON.stringify(savedMarkers), 365);
 }
 
