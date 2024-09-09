@@ -62,8 +62,8 @@ function createDetails(data) {
   if (popup) {
     var www = dane["www"];
     try {
-      if (!www.includes("www.") & (www.length > 0)) {
-        www = "https://www." + www;
+      if (!www.includes("https://") & (www.length > 0)) {
+        www = "https://" + www;
       }
     } catch {}
 
