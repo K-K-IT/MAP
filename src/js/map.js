@@ -5,7 +5,6 @@ let map;
 
 
 function createMap() {
-  savedMarkers = getCookie('savedMarkers')  
   map = L.map("map").setView([54.4506593, 18.5607375125286], 7);
 
   const tiles = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -50,12 +49,13 @@ function createMap() {
 }
 
 function setPoint(point, uid) {
+  const isSaved = myArray.map(item => item.uid).includes(val);
   const popupContent = document.createElement("div");
   popupContent.innerHTML = `      `;
   // Dodawanie własnego atrybutu
   popupContent.setAttribute("data-uid", uid);
   popupContent.setAttribute("style", "width: auto;");
-
+ 
 
   var marker = L.marker(point, {
     color: "red",
@@ -64,6 +64,10 @@ function setPoint(point, uid) {
     radius: 500,
     alt: uid,
   });
+  if (isSaved){
+    marker.color = "green"
+  }
+  
   marker.addTo(map).bindPopup(popupContent);
 
   marker.on("click", onMarkerClick);
@@ -76,6 +80,8 @@ function showAboutModal() {
 }
 
 function getPoints(e) {
+  savedMarkers = getCookie('savedMarkers')  
+
   document
     .querySelectorAll(".leaflet-interactive")
     .forEach((el) => el.remove());
@@ -124,7 +130,7 @@ function saveMarker(uid) {
 
 function setCookie(name, value, days) {
   const expires = new Date(Date.now() + days * 86400000).toUTCString();
-  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
+  document.cookie = `${name}=${value}; expires=${expires}; path=/; SameSite=None; Secure`;
 }
 
 
