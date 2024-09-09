@@ -49,6 +49,7 @@ function createMap() {
 }
 
 function setPoint(point, uid) {
+  isSaved = savedMarkers.map(item => item.uid).includes(uid);
   const popupContent = document.createElement("div");
   popupContent.innerHTML = `
     <button class="save-button">Zapisz</button>
@@ -70,6 +71,9 @@ function setPoint(point, uid) {
     radius: 500,
     alt: uid,
   });
+  if(isSaved){
+    marker.color = "green"
+  }
   marker.addTo(map).bindPopup(popupContent);
 
   marker.on("click", onMarkerClick);
@@ -86,6 +90,8 @@ function showAboutModal() {
 }
 
 function getPoints(e) {
+  savedMarkers = getCookie('savedMarkers')
+
   document
     .querySelectorAll(".leaflet-interactive")
     .forEach((el) => el.remove());
