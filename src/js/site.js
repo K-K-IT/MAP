@@ -63,7 +63,7 @@ function createDetails(data) {
     var www = dane["www"];
     try {
       if (!www.includes("https://") & (www.length > 0)) {
-        www = "https://" + www;
+        www = "https://" + dane["www"];
       }
     } catch {}
 
